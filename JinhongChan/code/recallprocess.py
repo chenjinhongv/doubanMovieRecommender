@@ -28,7 +28,6 @@ SVD_RESULT_USER2ACTOR = "/svdresultuser2actor" # svd方法召回演员
 SVD_RESULT_USER2DIRECTOR = "/svdresultuser2director" # svd方法召回导演
 SVD_RESULT_USER2AREA = "/svdresultuser2area" # svd方法召回地区
 W2V_RESULT_USER2COMMENT = "/w2vresultuser2coment" # w2v方法召回评论
-W2V_RESULT_ACTOR2MOVIE = "/w2vresultactor2movie" # w2v方法召回相似演员
 
 
 
