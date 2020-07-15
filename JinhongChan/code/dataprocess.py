@@ -59,8 +59,14 @@ def create_movie_actor(infile=BASE_PATH + MOVIE, outfile=BASE_PATH + "/movie_act
     
     return casts
 
-def remove():
-    os.remove(BASE_PATH + "/movie_actor_list.json")
+
+# 产出USER ACTOR RATE 数据
+def create_user_actor_rate(outfile):
+    pass
+
+# 产出USER MOVIE 数据
+def create_user_movie(outfile):
+    pass
 
 
 # 产出MOVIE DIRECTOR RATE TIMESTRAMP 数据
