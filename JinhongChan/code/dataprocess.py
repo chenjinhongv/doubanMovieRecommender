@@ -121,6 +121,17 @@ def create_movie_actor(infile=BASE_PATH + MOVIE, outfile=BASE_PATH + "/movie_act
     
     return casts
 
+<<<<<<< HEAD
+=======
+
+# 产出USER ACTOR RATE 数据
+def create_user_actor_rate(outfile):
+    pass
+
+# 产出USER MOVIE 数据
+def create_user_movie(outfile):
+    pass
+>>>>>>> 30e1be8293c80c6590a3443ad684ea472a25db54
 
 
 # 产出USER DIRECTOR RATE 数据
