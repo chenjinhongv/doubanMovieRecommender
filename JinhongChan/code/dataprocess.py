@@ -19,12 +19,12 @@ MOVIE = "/movie.json"
 def create_user_movie_rate(infile=BASE_PATH + USER_RATE, outfile=BASE_PATH + "/user_movie_rate.csv"):
     
     if os.path.exists(outfile):
-        rate = pd.read_csv(args, kwargs)
+        rate = pd.read_csv(outfile)
     else:
-        rate = pd.read_csv(infile)
+        rate = pd.read_csv(infile, encoding = "utf-8")
         rate = rate.loc[rate.Username != "[已注销]",["Username","Movie_Name_CN","Star","Date"]]
         rate = rate.rename(columns = {"Username":"user","Movie_Name_CN":"movie","Star":"rate","Date":"timestramp"})
-        rate.to_csv(outfile, index=False, header=True)
+        rate.to_csv(outfile, index=False, header=True, encoding = "utf-8")
     
     return rate
 
@@ -121,8 +121,6 @@ def create_movie_actor(infile=BASE_PATH + MOVIE, outfile=BASE_PATH + "/movie_act
     
     return casts
 
-<<<<<<< HEAD
-=======
 
 # 产出USER ACTOR RATE 数据
 def create_user_actor_rate(outfile):
@@ -131,7 +129,6 @@ def create_user_actor_rate(outfile):
 # 产出USER MOVIE 数据
 def create_user_movie(outfile):
     pass
->>>>>>> 30e1be8293c80c6590a3443ad684ea472a25db54
 
 
 # 产出USER DIRECTOR RATE 数据
@@ -161,4 +158,4 @@ def create_user_director_rate(outfile=BASE_PATH + "/movie/actor"):
 
 #
 if __name__ == "__main__":
-    pass
+    create_user_movie_rate()

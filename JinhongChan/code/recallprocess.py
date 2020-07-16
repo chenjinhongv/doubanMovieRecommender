@@ -13,6 +13,8 @@ from surprise import KNNBaseline
 from surprise import SVD
 from surprise import dump
 
+import dataprocess
+
 
 
 DATA_BASE_PATH = "../dataset"
@@ -23,6 +25,7 @@ N_EPOCHS_SVD = 37
 LR_ALL_SVD = 0.005
 
 ALGO_RESULT_PATH = "../algoresultrapo"
+KNN_RESULT_USER2MOVIE = "/knnresultuser2movie" # knn算法召回电影
 SVD_RESULT_USER2MOVIE = "/svdresultuser2movie" # svd方法召回电影
 SVD_RESULT_USER2ACTOR = "/svdresultuser2actor" # svd方法召回演员
 SVD_RESULT_USER2DIRECTOR = "/svdresultuser2director" # svd方法召回导演
@@ -46,14 +49,44 @@ def svd4_user_movie_rate():
     if os.path.exists(ALGO_RESULT_PATH + SVD_RESULT_USER2MOVIE):
         return dump.load(ALGO_RESULT_PATH + SVD_RESULT_USER2MOVIE)[0]
     else:
-        reader = Reader(line_format = "user item rating timestramp", sep = ",")
-        data = Dataset.road_from_file(DATA_BASE_PATH + USER_MOVIE_RATE_PATH, reader = reader)
+        # 读取数据
+        reader = Reader(line_format = "user item rating")
+        data = Dataset.load_from_df(dataprocess.create_user_movie_rate().loc[:,["user","movie","rate"]], reader = reader)
         trainset = data.build_full_trainset()
         
+        # 参数设置&模型初始化
         algo = SVD(n_epochs=N_EPOCHS_SVD, lr_all=LR_ALL_SVD, verbose=True)
         algo.fit(trainset)
         
         dump.dump(file_name = ALGO_RESULT_PATH + SVD_RESULT_USER2MOVIE, 
+                  algo = algo, verbose = True)
+        return algo
+
+
+def knn_user_movie_rate():
+    """
+
+    Returns
+    -------返回训练好的基于user movie rating数据的knnbaseline模型
+    TYPE
+        surprise.KNNbaseline object.
+
+    """
+    
+    if os.path.exists(ALGO_RESULT_PATH + KNN_RESULT_USER2MOVIE):
+        return dump.load(ALGO_RESULT_PATH + KNN_RESULT_USER2MOVIE)[0]
+    else:
+        # 读取数据
+        reader = Reader(line_format = "user item rating", sep = ",")
+        data = Dataset.load_from_df(dataprocess.create_user_movie_rate().loc[:,["user","movie","rate"]], reader = reader)
+        trainset = data.build_full_trainset()
+        
+        # 参数设置&模型初始化
+        sim_options = {'name': 'pearson', "user_based":False}
+        algo = KNNBaseline(k = 10, sim_options = sim_options)
+        algo.fit(trainset)
+        
+        dump.dump(file_name = ALGO_RESULT_PATH + KNN_RESULT_USER2MOVIE, 
                   algo = algo, verbose = True)
         return algo
 
@@ -68,5 +101,5 @@ def svd4_user_actor_rate():
     """
 
 
-if __name__ = "__main__":
-    get_svd()
+if __name__ == "__main__":
+    svd4_user_movie_rate()
